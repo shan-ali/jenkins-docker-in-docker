@@ -12,19 +12,15 @@ This is all done on a local Windows machine using Docker Desktop
 
 # Multipass Setup
 
-Verify that your Multipass setup is installed correctly.
-
-`multipass --version`
-
 In the Multipass directory there is a `cloud-config.yml` file that is the configuration for creating a Multipass VM with docker installed. There is also a `run.ps1` file that contains the Multipass commands to spin up the VMs and also setup a volume mount for persisting the jenkins_home directory. You will need to set the `JENKINS_HOME` environment variable on your system with any location where you want jenkins_home to be stored. 
 
-[Enable mounts for Windows Multipass](https://multipass.run/docs/set-command#local.privileged-mounts)
+On Windows we will need to [enable Multipass mounts](https://multipass.run/docs/set-command#local.privileged-mounts)
 
 `multipass set local.privileged-mounts=true`
 
 Run the `run.ps1` file to start the Multipass VMs. This will setup three Ubuntu VMs with docker installed
 
-`.multipass/run`
+`.\multipass\run.ps1`
 
 Check that the VMs are running
 
@@ -33,11 +29,3 @@ Check that the VMs are running
 Enter the shell of the VM
 
 `multipass exec jenkins-docker-in-docker-node1 -- bash`
-
-Stop, delete, and purge all VMs
-
-```
-multipass stop --all
-multipass delete --all
-multipass purge
-```

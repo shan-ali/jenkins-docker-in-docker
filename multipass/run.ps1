@@ -5,4 +5,3 @@ multipass launch --cloud-init ./multipass/cloud-config.yml --disk 5G --mem 2G --
 
 #setup volume mount for jenkins_home
 multipass mount $env:JENKINS_HOME jenkins-docker-in-docker-node1:/var/jenkins_home
-
