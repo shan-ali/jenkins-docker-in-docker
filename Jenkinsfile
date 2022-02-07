@@ -1,13 +1,25 @@
 pipeline {
   agent {
     docker {
-      image 'maven:3.8.4-jdk-11'
+      image 'docker:20.10.12-git'
     }
   }
   stages {
-    stage('Get Maven Version') {
+    stage('Get Docker Version') {
       steps {
-        sh "mvn --version"
+        sh "docker --version"
+      }
+    }
+    stage('Get Git Version') {
+      steps {
+        sh "git --version"
+      }
+    }
+    stage('Git ClosGet Git Version') {
+      steps {
+        script{
+          git https://github.com/shan-ali/jenkins-docker-in-docker.git
+        } 
       }
     }
   }
