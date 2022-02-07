@@ -15,12 +15,5 @@ pipeline {
         sh "git --version"
       }
     }
-    stage('Git ClosGet Git Version') {
-      steps {
-        script{
-          git https://github.com/shan-ali/jenkins-docker-in-docker.git
-        } 
-      }
-    }
   }
 }
