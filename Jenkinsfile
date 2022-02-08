@@ -8,7 +8,7 @@ pipeline {
     stage('Build') {
         steps {
             echo 'Building...'
-            'sh docker image build -t shanali38/jenkins-docker-in-docker -f docker/Dockerfile .'
+            sh "docker image build -t shanali38/jenkins-docker-in-docker -f docker/Dockerfile ."
         }
     }
     stage('Test') {
