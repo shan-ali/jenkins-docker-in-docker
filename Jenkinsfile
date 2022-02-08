@@ -5,15 +5,21 @@ pipeline {
     }
   }
   stages {
-    stage('Get Docker Version') {
-      steps {
-        sh "docker --version"
-      }
+    stage('Build') {
+        steps {
+            echo 'Building...'
+            'sh docker image build -t shanali38/jenkins-docker-in-docker -f docker/Dockerfile .'
+        }
     }
-    stage('Get Git Version') {
-      steps {
-        sh "git --version"
-      }
+    stage('Test') {
+        steps {
+            echo 'Testing..'
+        }
+    }
+    stage('Deploy') {
+        steps {
+            echo 'Deploying....'
+        }
     }
   }
 }
