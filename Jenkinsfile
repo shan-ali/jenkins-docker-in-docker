@@ -14,7 +14,7 @@ pipeline {
     stage('Test') {
         steps {
             echo 'Testing..'
-            sh "docker image ls"
+            sh "sleep 5"
         }
     }
     stage('Deploy') {
