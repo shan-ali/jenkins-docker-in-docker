@@ -79,5 +79,19 @@ COPY --chown=jenkins:jenkins jenkins/jobs/ /var/jenkins_home/jobs/
 
 # Setup Jenkins
 
-You can access the Jenkins instance by going to http://localhost:8080/. You will need
+You can access the Jenkins instance by going to http://localhost:8080/. You will need to go through the initial setup
 
+### Unlock Jenkins
+
+We can get easily get the Jenkins initial admin password with the following
+```
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+```
+
+### Customize Jenkins
+Click on "Install Suggested Plugins". Since we already did this via `plugins.txt`, all the suggested plugins should already be installed. 
+
+### Create First Admin User
+Create your first admin user or skip and use the "admin" user with the initial admin password that you retrieved from `/var/jenkins_home/secrets/initialAdminPassword`. In a production Jenkins setup you will want to use a more robust user management system like LDAP or any of the other offerings in Jenkins. 
+
+# Running Build Job
