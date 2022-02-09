@@ -94,4 +94,11 @@ Click on "Install Suggested Plugins". Since we already did this via `plugins.txt
 ### Create First Admin User
 Create your first admin user or skip and use the "admin" user with the initial admin password that you retrieved from `/var/jenkins_home/secrets/initialAdminPassword`. In a production Jenkins setup you will want to use a more robust user management system like LDAP or any of the other offerings in Jenkins. 
 
-# Running Build Job
+# Running the Build Job
+
+The job [jenkins-docker-in-docker-build](http://localhost:8080/job/jenkins-docker-in-docker-build/) is a pipeline job that uses the `Jenkinsfile` in this repository to execute a docker build using the `Dockerfile` in the docker directory in this repository. Essentially, we are just building the same image that we are currently running. However, this job will create a new Docker container to execute the build rather than running it on the Jenkins container itself. Once it completes all of the steps, the newly created container will be deleted. 
+
+
+
+https://user-images.githubusercontent.com/16169323/153267192-aecd2d1d-c1f1-4f96-8fff-a7f9c6234ab6.mp4
+
