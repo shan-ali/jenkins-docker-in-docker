@@ -98,7 +98,14 @@ Create your first admin user or skip and use the "admin" user with the initial a
 
 The job [jenkins-docker-in-docker-build](http://localhost:8080/job/jenkins-docker-in-docker-build/) is a pipeline job that uses the `Jenkinsfile` in this repository to execute a docker build using the `Dockerfile` in the docker directory in this repository. Essentially, we are just building the same image that we are currently running. However, this job will create a new Docker container to execute the build rather than running it on the Jenkins container itself. Once it completes all of the steps, the newly created container will be deleted. 
 
-
-
 https://user-images.githubusercontent.com/16169323/153267192-aecd2d1d-c1f1-4f96-8fff-a7f9c6234ab6.mp4
+
+# References
+- https://github.com/jenkinsci/docker/blob/master/README.md
+- https://tomgregory.com/running-docker-in-docker-on-windows
+- https://tomgregory.com/running-docker-in-docker-on-windows
+- https://gist.github.com/afloesch/ea855b30cfb9f157dda8c207d40f05c0
+- https://github.com/jenkinsci/docker-workflow-plugin
+- https://stackoverflow.com/questions/47854463/docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socke?page=1&tab=votes#tab-top
+
 
