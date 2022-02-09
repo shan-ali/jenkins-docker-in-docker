@@ -20,6 +20,7 @@ pipeline {
     stage('Deploy') {
         steps {
             echo 'Deploying....'
+            echo 'Normally, we would push the newly built image to a docker repository'
         }
     }
   }
