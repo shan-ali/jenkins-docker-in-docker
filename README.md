@@ -1,31 +1,83 @@
 # jenkins-docker-in-docker
 
-Run Jenkins in a multinode VM cluster (using Multipass). Jenkin jobs will create a new container to run the job as opposed to on VM, hence docker in docker. 
-
-This is all done on a local Windows machine using Docker Desktop
+Run Jenkins in a Docker container. Jenkins jobs will create a new temporary sibling Docker container with the help of the [Docker Pipeline Plugin](https://github.com/jenkinsci/docker-workflow-plugin) to execute the job. Hence Docker in Docker.
 
 # Requirements
 
- 1. [Docker Desktop](https://www.docker.com/products/docker-desktop)
- 2. [Multipass](https://Multipass.run/)
- 3. Powershell
+This is all done on a local Windows machine using [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
-# Multipass Setup
+# Setup Container
 
-In the Multipass directory there is a `cloud-config.yml` file that is the configuration for creating a Multipass VM with docker installed. There is also a `run.ps1` file that contains the Multipass commands to spin up the VMs and also setup a volume mount for persisting the jenkins_home directory. You will need to set the `JENKINS_HOME` environment variable on your system with any location where you want jenkins_home to be stored. 
+### Running Jenkins
+```
+docker run -u root --name jenkins -d -p 8080:8080 -p 50000:50000
+-v jenkins_home:/var/jenkins_home 
+-v //var/run/docker.sock:/var/run/docker.sock 
+-v //usr/bin/docker:/usr/bin/docker  
+--pull=always shanali38/jenkins-docker-in-docker
+```
 
-On Windows we will need to [enable Multipass mounts](https://multipass.run/docs/set-command#local.privileged-mounts)
+More information about Jenkins in Docker can be found in the [Official Jenkins Docker Image Source](
+https://github.com/jenkinsci/docker/blob/master/README.md)
 
-`multipass set local.privileged-mounts=true`
+### Image on Docker Hub
 
-Run the `run.ps1` file to start the Multipass VMs. This will setup three Ubuntu VMs with docker installed
+https://hub.docker.com/repository/docker/shanali38/jenkins-docker-in-docker
 
-`.\multipass\run.ps1`
+### Mounting Docker Unix Socket & Docker Executable
 
-Check that the VMs are running
+["The Docker daemon listens to a socket at /var/run/docker.sock, responding to calls to the Docker API. If we want to be able to issue Docker commands from a container, we’ll need to communicate with this socket."](https://tomgregory.com/running-docker-in-docker-on-windows/#All_about_varrundockersock) Therefore, we can avoid having to reinstall Docker on the Jenkins container, and instead use the Docker installation on the host (in our case, our local Windows host running Docker Desktop). More importantly, this will allow Jenkins to spawn new containers on the host machine, rather than in itself. 
 
-`multipass ls`
+```
+-v //var/run/docker.sock:/var/run/docker.sock
+```
 
-Enter the shell of the VM
+We will also need to mount the docker executable from the host.
 
-`multipass exec jenkins-docker-in-docker-node1 -- bash`
+```
+-v //usr/bin/docker:/usr/bin/docker
+```
+ 
+### Docker Unix Socket Permissions
+
+By default `/var/run/docker.sock` should be owned by `root:docker` (or `root:jenkins`) meaning that in order to access the Docker socket your user needs to be in the docker group. However, when using Docker Desktop `/var/run/docker.sock` will be instead owned by `root:root`. To get around this we will need to run the container as root. Keep in mind that this is not ideal for Production scenerios. 
+
+```
+-u root
+```
+
+If running on a linux host `/var/run/docker.sock` should have the correct permissions of root:docker (or root:jenkins) and we do not have to run the container as root.
+
+### Persisting Jenkins Home
+
+`/var/jenkins_home` stores all of the configuration for the Jenkins instance. In order to persist our installation we will want to mount this location to a Docker volume. More elgant solutions should be implemented to backup and store jenkins_home for long term usage.  
+
+```
+-v jenkins_home:/var/jenkins_home
+```
+
+# Dockerfile
+
+In the Dockerfile for this Jenkins image there are two custom steps
+
+### Pre Install Suggested Plugins
+
+jenkins/plugins.txt contains all the plugins we want to install and their versions. This list contains all the suggested plugins when you are first setting up Jenkins + the Docker Pipeline Plugin (docker-workflow:1.28) 
+
+```
+COPY --chown=jenkins:jenkins jenkins/plugins.txt /usr/share/jenkins/ref/plugins.txt
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+```
+
+### Create an Example Build Job
+
+jenkins/jobs/jenkins-docker-in-docker-build/config.xml is the config file for a Jenkins build job that will built this repos docker image. We will copy this into jenkins_home so that on initital startup we will have the `jenkins-docker-in-docker-build` job already made.
+
+```
+COPY --chown=jenkins:jenkins jenkins/jobs/ /var/jenkins_home/jobs/
+```
+
+# Setup Jenkins
+
+You can access the Jenkins instance by going to http://localhost:8080/. You will need
+
