@@ -94,4 +94,16 @@ Click on "Install Suggested Plugins". Since we already did this via `plugins.txt
 ### Create First Admin User
 Create your first admin user or skip and use the "admin" user with the initial admin password that you retrieved from `/var/jenkins_home/secrets/initialAdminPassword`. In a production Jenkins setup you will want to use a more robust user management system like LDAP or any of the other offerings in Jenkins. 
 
-# Running Build Job
+# Running the Build Job
+
+The job [jenkins-docker-in-docker-build](http://localhost:8080/job/jenkins-docker-in-docker-build/) is a pipeline job that uses the `Jenkinsfile` in this repository to execute a docker build using the `Dockerfile` in the docker directory in this repository. Essentially, we are just building the same image that we are currently running. However, this job will create a new Docker container to execute the build rather than running it on the Jenkins container itself. Once it completes all of the steps, the newly created container will be deleted. 
+
+https://user-images.githubusercontent.com/16169323/153267994-7b27dec5-429f-4452-af8f-81016846e71d.mp4
+
+# References
+- https://github.com/jenkinsci/docker/blob/master/README.md
+- https://tomgregory.com/running-docker-in-docker-on-windows
+- https://tomgregory.com/running-docker-in-docker-on-windows
+- https://gist.github.com/afloesch/ea855b30cfb9f157dda8c207d40f05c0
+- https://github.com/jenkinsci/docker-workflow-plugin
+- https://stackoverflow.com/questions/47854463/docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socke?page=1&tab=votes#tab-top
