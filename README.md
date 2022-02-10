@@ -103,7 +103,6 @@ https://user-images.githubusercontent.com/16169323/153267994-7b27dec5-429f-4452-
 # References
 - https://github.com/jenkinsci/docker/blob/master/README.md
 - https://tomgregory.com/running-docker-in-docker-on-windows
-- https://tomgregory.com/running-docker-in-docker-on-windows
 - https://gist.github.com/afloesch/ea855b30cfb9f157dda8c207d40f05c0
 - https://github.com/jenkinsci/docker-workflow-plugin
 - https://stackoverflow.com/questions/47854463/docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socke?page=1&tab=votes#tab-top
