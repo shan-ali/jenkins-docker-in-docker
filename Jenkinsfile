@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'docker:20.10.12-git'
+      image 'docker:git'
     }
   }
   stages {
